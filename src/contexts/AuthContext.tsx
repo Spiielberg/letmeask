@@ -1,4 +1,4 @@
-import { FC, ReactElement, useState } from 'react';
+import { FC, ReactElement, useEffect, useState } from 'react';
 import { createContext } from 'react';
 
 import { auth, firebase } from '../services/firebase';
@@ -38,6 +38,28 @@ export const AuthProvider: FC = ({ children }): ReactElement => {
       });
     }
   }
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        const { displayName, photoURL, uid } = user;
+
+        if (!displayName || !photoURL) {
+          throw new Error('Missing information from Google Account.');
+        }
+
+        setUser({
+          id: uid,
+          name: displayName,
+          avatar: photoURL,
+        });
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, signInWithGoogle }}>
