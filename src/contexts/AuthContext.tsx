@@ -9,7 +9,7 @@ type User = {
   avatar: string;
 };
 
-export type AuthContextType = {
+type AuthContextType = {
   user: User | undefined;
   signInWithGoogle: () => Promise<void>;
 };
