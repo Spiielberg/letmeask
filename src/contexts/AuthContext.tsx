@@ -16,7 +16,7 @@ export type AuthContextType = {
 
 export const AuthContext = createContext({} as AuthContextType);
 
-export const AuthProvider: FC = ({ children }): ReactElement => {
+export const AuthContextProvider: FC = ({ children }): ReactElement => {
   const [user, setUser] = useState<User>();
 
   async function signInWithGoogle() {
