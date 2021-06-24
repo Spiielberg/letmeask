@@ -43,6 +43,11 @@ export function Home() {
       return;
     }
 
+    if (roomRef.val().closedAt) {
+      toast.error('Esta sala já foi encerrada!', toastConfig);
+      return;
+    }
+
     history.push(`/rooms/${roomCode}`);
   }
 
