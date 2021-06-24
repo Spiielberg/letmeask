@@ -147,6 +147,16 @@ export function Room() {
               </Button>
             </div>
           </form>
+
+          <div className='question-list'>
+            {questions.map(question => (
+              <Question
+                key={question.id}
+                content={question.content}
+                author={question.author}
+              />
+            ))}
+          </div>
         </main>
       </div>
       <Toaster />
