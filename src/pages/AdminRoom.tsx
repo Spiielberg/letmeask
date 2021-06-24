@@ -1,15 +1,14 @@
-import { FormEvent, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 
 import { toastConfig } from '../config/toastConfig';
 
-import { useAuth } from '../hooks/auth';
 import { useRoom } from '../hooks/room';
 
 import { database } from '../services/firebase';
 
 import logoImg from '../assets/images/logo.svg';
+import deleteImg from '../assets/images/delete.svg';
 
 import { Button } from '../components/Button';
 import { Question } from '../components/Question';
@@ -22,39 +21,29 @@ type RoomParams = {
 };
 
 export function AdminRoom() {
-  const [newQuestion, setNewQuestion] = useState('');
-
+  const history = useHistory();
   const params = useParams<RoomParams>();
   const roomId = params.id;
 
-  const { user } = useAuth();
   const { questions, title } = useRoom(roomId);
 
-  async function handleSendQuestion(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  async function handleDeleteQuestion(questionId: string) {
+    if (window.confirm('Tem certeza que você deseja excluir esta pergunta?')) {
+      await database.ref(`rooms/${roomId}/questions/${questionId}`).remove();
 
-    if (newQuestion.trim() === '') {
-      return;
+      toast.success('Pergunta excluída!', toastConfig);
     }
+  }
 
-    if (!user) {
-      throw new Error('You must be logged in');
+  async function handleEndRoom() {
+    if (window.confirm('Tem certeza que você deseja encerrar esta sala?')) {
+      await database.ref(`rooms/${roomId}`).update({
+        closedAt: new Date(),
+      });
+
+      toast.success('Sala encerrada!', toastConfig);
+      history.push('/');
     }
-
-    const question = {
-      content: newQuestion,
-      author: {
-        name: user.name,
-        avatar: user.avatar,
-      },
-      isAnswered: false,
-      isHighlighted: false,
-    };
-
-    await database.ref(`rooms/${roomId}/questions`).push(question);
-
-    toast.success('Pergunta enviada!', toastConfig);
-    setNewQuestion('');
   }
 
   return (
@@ -66,7 +55,9 @@ export function AdminRoom() {
 
             <div>
               <RoomCode code={roomId} />
-              <Button isOutlined>Encerrar sala</Button>
+              <Button isOutlined onClick={handleEndRoom}>
+                Encerrar sala
+              </Button>
             </div>
           </div>
         </header>
@@ -87,7 +78,14 @@ export function AdminRoom() {
                 key={question.id}
                 content={question.content}
                 author={question.author}
-              />
+              >
+                <button
+                  type='button'
+                  onClick={() => handleDeleteQuestion(question.id)}
+                >
+                  <img src={deleteImg} alt='Remover pergunta' />
+                </button>
+              </Question>
             ))}
           </div>
         </main>
