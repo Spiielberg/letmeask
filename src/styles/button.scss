@@ -20,7 +20,7 @@
     color: #835afd;
   }
 
-  &:not(:disabled):hover {
+  &.outlined:not(:disabled):hover {
     border: 1px solid #6138db;
     color: #6138db;
   }
