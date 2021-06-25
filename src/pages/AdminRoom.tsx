@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
+import ReactModal from 'react-modal';
 
 import { toastConfig } from '../config/toastConfig';
 
@@ -9,41 +11,52 @@ import { database } from '../services/firebase';
 
 import logoImg from '../assets/images/logo.svg';
 import deleteImg from '../assets/images/delete.svg';
+import dangerImg from '../assets/images/danger.svg';
 
 import { Button } from '../components/Button';
 import { Question } from '../components/Question';
 import { RoomCode } from '../components/RoomCode';
+import { Modal } from '../components/Modal';
 
 import '../styles/room.scss';
+import '../styles/modal.scss';
+
+ReactModal.setAppElement('#root');
 
 type RoomParams = {
   id: string;
 };
 
 export function AdminRoom() {
+  const [questionToDelete, setQuestionToDelete] = useState<
+    string | undefined
+  >();
+  const [closeRoomModal, setCloseRoomModal] = useState(false);
+
   const history = useHistory();
   const params = useParams<RoomParams>();
   const roomId = params.id;
 
   const { questions, title } = useRoom(roomId);
 
-  async function handleDeleteQuestion(questionId: string) {
-    if (window.confirm('Tem certeza que você deseja excluir esta pergunta?')) {
-      await database.ref(`rooms/${roomId}/questions/${questionId}`).remove();
+  async function handleDeleteQuestion(questionId: string | undefined) {
+    await database.ref(`rooms/${roomId}/questions/${questionId}`).remove();
 
-      toast.success('Pergunta excluída!', toastConfig);
-    }
+    setQuestionToDelete(undefined);
+    toast.success('Pergunta excluída!', toastConfig);
   }
 
-  async function handleEndRoom() {
-    if (window.confirm('Tem certeza que você deseja encerrar esta sala?')) {
-      await database.ref(`rooms/${roomId}`).update({
-        closedAt: new Date(),
-      });
+  async function handleCloseRoom() {
+    await database.ref(`rooms/${roomId}`).update({
+      closedAt: new Date(),
+    });
 
-      toast.success('Sala encerrada!', toastConfig);
-      history.push('/');
-    }
+    toast.success('Sala encerrada!', toastConfig);
+    history.push('/');
+  }
+
+  function handleCloseModal() {
+    setCloseRoomModal(false);
   }
 
   return (
@@ -55,7 +68,7 @@ export function AdminRoom() {
 
             <div>
               <RoomCode code={roomId} />
-              <Button isOutlined onClick={handleEndRoom}>
+              <Button isOutlined onClick={() => setCloseRoomModal(true)}>
                 Encerrar sala
               </Button>
             </div>
@@ -81,7 +94,7 @@ export function AdminRoom() {
               >
                 <button
                   type='button'
-                  onClick={() => handleDeleteQuestion(question.id)}
+                  onClick={() => setQuestionToDelete(question.id)}
                 >
                   <img src={deleteImg} alt='Remover pergunta' />
                 </button>
@@ -91,6 +104,30 @@ export function AdminRoom() {
         </main>
       </div>
       <Toaster />
+      <Modal
+        id={questionToDelete}
+        onConfirm={handleDeleteQuestion}
+        onCancel={() => setQuestionToDelete(undefined)}
+      />
+      <ReactModal
+        className='modal-content'
+        overlayClassName='overlay-modal'
+        isOpen={closeRoomModal}
+        onRequestClose={handleCloseModal}
+      >
+        <img src={dangerImg} alt='Círculo com um X' />
+        <h1>Encerrar sala</h1>
+        <p>Tem certeza que você deseja encerrar esta sala?</p>
+
+        <div>
+          <Button isCancelButton type='button' onClick={handleCloseModal}>
+            Cancelar
+          </Button>
+          <Button isDangerButton type='button' onClick={handleCloseRoom}>
+            Sim, encerrar
+          </Button>
+        </div>
+      </ReactModal>
     </>
   );
 }
