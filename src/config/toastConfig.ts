@@ -5,7 +5,7 @@ export const toastConfig: DefaultToastOptions = {
   style: {
     fontFamily: "'Roboto', sans-serif",
     color: '#29292e',
-    background: '#fff',
+    background: '#f8f8f8',
     boxShadow: '0 2px 12px rgba(0, 0, 0, 0.04)',
   },
 };
