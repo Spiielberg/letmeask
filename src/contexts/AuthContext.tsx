@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { auth, firebase } from '../services/firebase';
 
@@ -21,6 +22,8 @@ export const AuthContext = createContext({} as AuthContextType);
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
   const [user, setUser] = useState<User>();
+
+  const history = useHistory();
 
   async function signInWithGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -56,13 +59,17 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
           name: displayName,
           avatar: photoURL,
         });
+      } else {
+        if (window.location.pathname.includes('/admin/')) {
+          history.push(window.location.pathname.replace('/admin/', '/'));
+        }
       }
     });
 
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [history]);
 
   return (
     <AuthContext.Provider value={{ user, signInWithGoogle }}>
