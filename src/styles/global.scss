@@ -7,6 +7,32 @@
 body {
   background: #f8f8f8;
   color: #29292e;
+
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #e6e8eb;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: #e6e8eb;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #afb2b1;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: #e6e8eb;
+    border-radius: 0.25rem;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #808080;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: #e6e8eb;
+  }
 }
 
 body,
