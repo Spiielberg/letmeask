@@ -63,7 +63,8 @@ export function useRoom(roomId: string) {
             )?.[0],
           };
         })
-        .sort((a, b) => b.likeCount - a.likeCount);
+        .sort((a, b) => b.likeCount - a.likeCount)
+        .sort((a, b) => Number(a.isAnswered) - Number(b.isAnswered));
 
       setTitle(databaseRoom.title);
       setQuestions(parsedQuestions);
