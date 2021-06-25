@@ -3,6 +3,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import ReactModal from 'react-modal';
 
+import { modalConfig } from '../config/modalConfig';
 import { toastConfig } from '../config/toastConfig';
 
 import { useRoom } from '../hooks/room';
@@ -127,8 +128,8 @@ export function AdminRoom() {
         onCancel={() => setQuestionToDelete(undefined)}
       />
       <ReactModal
+        style={modalConfig}
         className='modal-content'
-        overlayClassName='overlay-modal'
         isOpen={closeRoomModal}
         onRequestClose={handleCloseModal}
       >

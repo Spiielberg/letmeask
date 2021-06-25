@@ -1,15 +1,15 @@
-.overlay-modal {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+body.ReactModal__Body--open {
+  overflow: hidden;
+  position: relative;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background-color: rgba(0, 0, 0, 0.8);
+  #root {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    filter: blur(2px);
+  }
 }
 
 .modal-content {

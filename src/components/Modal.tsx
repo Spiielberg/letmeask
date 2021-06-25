@@ -1,5 +1,7 @@
 import ReactModal from 'react-modal';
 
+import { modalConfig } from '../config/modalConfig';
+
 import dangerImg from '../assets/images/danger.svg';
 
 import { Button } from './Button';
@@ -17,8 +19,8 @@ type ModalProps = {
 export function Modal({ id, onConfirm, onCancel }: ModalProps) {
   return (
     <ReactModal
+      style={modalConfig}
       className='modal-content'
-      overlayClassName='overlay-modal'
       isOpen={!!id}
       onRequestClose={onCancel}
     >
