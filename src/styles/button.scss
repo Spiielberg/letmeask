@@ -15,9 +15,18 @@
   transition: filter 0.2s;
 
   &.outlined {
-    background: #fff;
+    background: #f8f8f8;
     border: 1px solid #835afd;
     color: #835afd;
+  }
+
+  &.cancel {
+    background: #dbdcdd;
+    color: #737380;
+  }
+
+  &.danger {
+    background: #e73f5d;
   }
 
   &.outlined:not(:disabled):hover {
