@@ -1,6 +1,7 @@
 import { FormEvent, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
+import classNames from 'classnames';
 
 import { toastConfig } from '../config/toastConfig';
 
@@ -128,7 +129,9 @@ export function Room() {
                   author={question.author}
                 >
                   <button
-                    className={`like-button ${question.likeId && 'liked'}`}
+                    className={classNames('like-button', {
+                      liked: question.likeId,
+                    })}
                     type='button'
                     aria-label='Marcar como gostei'
                     onClick={() =>

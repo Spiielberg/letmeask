@@ -1,4 +1,5 @@
 import { ButtonHTMLAttributes } from 'react';
+import classNames from 'classnames';
 
 import '../styles/button.scss';
 
@@ -16,9 +17,12 @@ export function Button({
 }: ButtonProps) {
   return (
     <button
-      className={`button ${isOutlined && 'outlined'} ${
-        isCancelButton && 'cancel'
-      } ${isDangerButton && 'danger'}`}
+      className={classNames(
+        'button',
+        { outlined: isOutlined },
+        { cancel: isCancelButton },
+        { danger: isDangerButton }
+      )}
       {...props}
     />
   );
