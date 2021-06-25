@@ -12,6 +12,7 @@ import { database } from '../services/firebase';
 import logoImg from '../assets/images/logo.svg';
 import deleteImg from '../assets/images/delete.svg';
 import dangerImg from '../assets/images/danger.svg';
+import emptyQuestionsImg from '../assets/images/empty-questions.svg';
 
 import { Button } from '../components/Button';
 import { Question } from '../components/Question';
@@ -77,7 +78,7 @@ export function AdminRoom() {
 
         <main>
           <div className='room-title'>
-            <h1>Sala: {title}</h1>
+            <h1>Sala {title}</h1>
             {questions.length > 0 && (
               <span>
                 {questions.length} pergunta{questions.length > 1 && 's'}
@@ -85,22 +86,38 @@ export function AdminRoom() {
             )}
           </div>
 
-          <div className='question-list'>
-            {questions.map(question => (
-              <Question
-                key={question.id}
-                content={question.content}
-                author={question.author}
-              >
-                <button
-                  type='button'
-                  onClick={() => setQuestionToDelete(question.id)}
+          {questions.length > 0 ? (
+            <div className='question-list'>
+              {questions.map(question => (
+                <Question
+                  key={question.id}
+                  content={question.content}
+                  author={question.author}
                 >
-                  <img src={deleteImg} alt='Remover pergunta' />
-                </button>
-              </Question>
-            ))}
-          </div>
+                  <button
+                    type='button'
+                    onClick={() => setQuestionToDelete(question.id)}
+                  >
+                    <img src={deleteImg} alt='Remover pergunta' />
+                  </button>
+                </Question>
+              ))}
+            </div>
+          ) : (
+            <div className='empty-questions'>
+              <div>
+                <img
+                  src={emptyQuestionsImg}
+                  alt='Caixas de perguntas e respostas'
+                />
+                <strong>Nenhuma pergunta por aqui...</strong>
+                <p>
+                  Envie o código desta sala para seus amigos e <br />
+                  comece a responder perguntas!
+                </p>
+              </div>
+            </div>
+          )}
         </main>
       </div>
       <Toaster />
