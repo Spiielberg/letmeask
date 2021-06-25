@@ -140,6 +140,7 @@ export function Room() {
                       onClick={() =>
                         handleLikeQuestion(question.id, question.likeId)
                       }
+                      disabled={!user}
                     >
                       {question.likeCount > 0 && (
                         <span>{question.likeCount}</span>

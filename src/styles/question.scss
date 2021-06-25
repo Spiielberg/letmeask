@@ -99,9 +99,13 @@
               stroke: #835afd;
             }
           }
+
+          &:disabled {
+            cursor: not-allowed;
+          }
         }
 
-        &:hover {
+        &:not(:disabled):hover {
           filter: brightness(0.8);
         }
       }
