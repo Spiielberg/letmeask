@@ -32,7 +32,7 @@ This project was made using the follow technologies:
 # Features
 
 * Login with Google Authentication.
-* Allow users to like questions.
+* Allow users to create room, send and like question.
 * Allow room admin to manage questions, as highlight, mark as read or delete.
 
 #  How to run
