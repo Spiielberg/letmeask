@@ -27,7 +27,7 @@ This project was made using the follow technologies:
 * [Firebase](https://firebase.google.com)
 * [Sass](https://sass-lang.com)
 * [React Hot Toast](https://react-hot-toast.com)
-* [react Modal](https://www.npmjs.com/package/react-modal)
+* [React Modal](https://www.npmjs.com/package/react-modal)
 
 # Features
 
